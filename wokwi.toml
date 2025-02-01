@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = 'build/C5012925_1.uf2'
+elf = 'build/C5012925_1.elf'
