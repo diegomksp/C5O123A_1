@@ -8,38 +8,38 @@
 #define PIN_ledG 11
 
 // Variável de controle para alternar entre os LEDs
-static volatile uint16_t controle = 0;
+static volatile uint16_t estado = 0;
 
 // Função para inicializar os pinos dos LEDs
 void inicializa();
 
 // Função de callback chamada pelo timer repetitivo
-bool repeating_timer_callback(struct repeating_timer *t){
+bool rrepeating_timer_callback(struct repeating_timer *t){
     static bool led_on = true; // Estado do LED
     
-    // Alternância do LED baseado na variável de controle
-    if(controle == 0){
+    // Alternância do LED baseado na variável de estado
+    if(estado == 0){
         gpio_put(PIN_ledR, led_on);
         gpio_put(PIN_ledG, 0);
         gpio_put(PIN_ledB, 0);
         printf("led vermelho %s\n", led_on ? "Ligado" : "Desligado");
-        controle = 1; // Muda para o próximo estado
+        estado = 1; // Muda para o próximo estado
         return true;
     }
-    if(controle == 1){
+    if(estado == 1){
         gpio_put(PIN_ledR, 0);
         gpio_put(PIN_ledG, 0);
         gpio_put(PIN_ledB, led_on);
         printf("led azul %s\n", led_on ? "Ligado" : "Desligado");
-        controle = 2; // Muda para o próximo estado
+        estado = 2; // Muda para o próximo estado
         return true;
     }
-    if(controle == 2){
+    if(estado == 2){
         gpio_put(PIN_ledR, 0);
         gpio_put(PIN_ledG, led_on);
         gpio_put(PIN_ledB, 0);
         printf("led verde %s\n", led_on ? "Ligado" : "Desligado");
-        controle = 0; // Retorna ao primeiro estado
+        estado = 0; // Retorna ao primeiro estado
         return true;
     }
 }
@@ -51,7 +51,7 @@ int main()
 
     struct repeating_timer timer;
     // Configura um timer para chamar a função de callback a cada 3 segundos
-    add_repeating_timer_ms(3000, repeating_timer_callback, NULL, &timer);
+    add_repeating_timer_ms(3000, rrepeating_timer_callback, NULL, &timer);
 
     // Loop infinito que imprime uma mensagem a cada 1 segundo
     while (true) {
